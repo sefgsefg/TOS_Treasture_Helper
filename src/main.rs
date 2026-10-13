@@ -398,12 +398,14 @@ fn save_line_roundtrip() {
 }
 
 fn main() -> eframe::Result {
-    let icon = eframe::icon_data::from_png_bytes(include_bytes!("../assets/icon.png"))
-        .expect("embedded application icon must be a valid PNG");
+    let viewport = egui::ViewportBuilder::default().with_inner_size([820.0, 560.0]);
+    #[cfg(has_app_icon)]
+    let viewport = viewport.with_icon(
+        eframe::icon_data::from_png_bytes(include_bytes!("../assets/icon.png"))
+            .expect("embedded application icon must be a valid PNG"),
+    );
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default()
-            .with_inner_size([820.0, 560.0])
-            .with_icon(icon),
+        viewport,
         ..Default::default()
     };
     eframe::run_native(
